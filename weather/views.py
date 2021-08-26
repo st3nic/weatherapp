@@ -28,6 +28,7 @@ def weather(request):
 
                 context = {
                     'context':resp.json(),
+                    'timefetched':timefetched,
                     'time':time,
                     'visibility': visibility,
                     'form': CityForm
