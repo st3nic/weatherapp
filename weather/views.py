@@ -21,17 +21,15 @@ def weather(request):
                 units = '&units=metric'
                 url = 'https://api.openweathermap.org/data/2.5/weather?q='
                 resp = requests.get(url + city + '&appid=' + key + units)
-                sr = int(resp.json()['sys']['sunrise'])
-                sunrise = (datetime.utcfromtimestamp(sr).strftime('%H:%M'))
-                ss = int(resp.json()['sys']['sunset'])
-                sunset = (datetime.utcfromtimestamp(ss).strftime('%H:%M'))
+                tr = int(resp.json()['dt'])
+                timefetched = (datetime.fromtimestamp(tr).strftime('%H:%M'))
+                visibility = resp.json()['visibility'] / 1000
                 time = datetime.now()
 
                 context = {
                     'context':resp.json(),
-                    'sunrise':sunrise,
-                    'sunset':sunset,
                     'time':time,
+                    'visibility': visibility,
                     'form': CityForm
                 }
             except:
@@ -45,23 +43,30 @@ def weather(request):
 
 
     else:
-        city = 'Sheffield'
-        key = config('API_KEY')
-        units = '&units=metric'
-        url = 'https://api.openweathermap.org/data/2.5/weather?q='
-        resp = requests.get(url + city + units + '&appid=' + key)
-        sr = int(resp.json()['sys']['sunrise'])
-        sunrise = (datetime.utcfromtimestamp(sr).strftime('%H:%M'))
-        ss = int(resp.json()['sys']['sunset'])
-        sunset = (datetime.utcfromtimestamp(ss).strftime('%H:%M'))
-        time = datetime.now()
+        try:
+            city = 'Sheffield'
+            key = config('API_KEY')
+            units = '&units=metric'
+            url = 'https://api.openweathermap.org/data/2.5/weather?q='
+            resp = requests.get(url + city + units + '&appid=' + key)
+            tr = int(resp.json()['dt'])
+            timefetched = (datetime.fromtimestamp(tr).strftime('%H:%M'))
+            visibility = resp.json()['visibility'] / 1000
+            time = datetime.now()
 
-        context = {
-            'context':resp.json(),
-            'sunrise':sunrise,
-            'sunset':sunset,
-            'time':time,
-            'form': CityForm
-        }
+            context = {
+                'context':resp.json(),
+                'timefetched':timefetched,
+                'time':time,
+                'visibility': visibility,
+                'form': CityForm
+            }
+        except:
+            context = {
+                'form': CityForm
+            }
+            messages.warning(request, 'No Connection to weather service')
+            return render(request, 'weather/weather.html', context)
+
 
     return render(request, 'weather/weather.html', context)

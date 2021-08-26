@@ -40,7 +40,7 @@
             <div class="card p-4">
                 <div class="d-flex">
                     <h6 class="flex-grow-1">{{context.name}}, {{context.sys.country}}</h6>
-                    <h6>Last Updated: {{time|date:"H:i"}}</h6>
+                    <h6>Last Updated: {{timefetched}}</h6>
                 </div>
                 <div class="d-flex flex-column temp mt-5 mb-3">
                     <h1 class="mb-0 font-weight-bold" id="heading"> {{context.main.temp}}° C </h1> <span class="small grey">{{context.weather.0.description|capfirst}}</span>
@@ -52,8 +52,8 @@
                         <p class="my-1"> <i class="fas fa-cloud"></i> <span> {{context.main.pressure}} Pressure </span> </p>
                     </div>
                     <div> 
-                        <p class="my-1"> <i class="fas fa-sun"></i> <span> {{sunrise}} Sunrise </span> </p>
-                        <p class="my-1"> <i class="fas fa-moon"></i> <span> {{sunset}} Sunset </span> </p> 
+                        <p class="my-1"> <i class="fas fa-eye"></i> <span> {{visibility}} km </span> </p>
+                        <p class="my-1"> <i class="fas fa-temperature-low"></i> <span> {{context.main.temp_min}} Min Temp </span> </p> 
                         <p class="my-1"> <i class="fas fa-temperature-high"></i> <span> {{context.main.temp_max}} Max Temp </span> </p>
                     </div>
                 </div>
